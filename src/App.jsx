@@ -1,17 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect,useCallback } from 'react'
+import Loading from './Loading'
+import Tours from './Tours'
 
+// ATTENTION!!!!!!!!!!
+// I SWITCHED TO PERMANENT DOMAIN
+const url = 'https://course-api.com/react-tours-project'
 function App() {
+  const [isLoading,setLoading]=useState(true)
 
-  return (
-<section>
-    <div>hello</div>
-</section>
-   
+  const [isTours,setTours]=useState([])
+
+  const handleRemove=(id)=>{
+    const removeTour=isTours.filter((tour)=>tour.id!==id)
+    setTours(removeTour)
+  }
+
+  const fetchTour=useCallback(async()=>{
+    setLoading(true)
+    let response=await fetch(url)
+    let data=await response.json()
+    setTours(data)
+    setLoading(false)
     
-  )
+    console.log(data);
+  },[])
+ useEffect(()=>{
+  fetchTour()
+ 
+ },[fetchTour])
+
+
+  if(isLoading){
+  return <Loading/>
+  }
+
+  return  <main>
+<Tours isTours={isTours} handleRemove={handleRemove} />
+  </main>
 }
 
 export default App
