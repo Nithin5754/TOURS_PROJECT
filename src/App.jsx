@@ -33,7 +33,15 @@ function App() {
   if(isLoading){
   return <Loading/>
   }
-
+if(isTours.length===0){
+  return <main onClick={()=>fetchTour()}>
+    <div className="title">
+      <h3>no tour left</h3>
+    <button className='btn'>refresh</button>
+     
+    </div>
+    </main>
+}
   return  <main>
 <Tours isTours={isTours} handleRemove={handleRemove} />
   </main>
